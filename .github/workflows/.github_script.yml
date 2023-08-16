@@ -21,25 +21,12 @@ jobs:
       - name: Run Python script
         id: run-script
         run: |
-          shopt -s nullglob
-          ls
-          wget https://raw.githubusercontent.com/Ensign-College/CS105Lab2aTests/main/run.py
-          wget https://raw.githubusercontent.com/Ensign-College/CS105Lab2aTests/main/grade.py
-          files=(*.py)
-          output=""
-          if [[ ${#files[@]} -gt 0 ]]; then
-            for file in "${files[@]}"
-            do
-                result=$(python "$file")
-                if [[ $result == *"OK"* || $result == *"Compilation successful."* || $result == *"Well done!"* ]]; then
-                    echo "script-output::Script $file executed successfully with output: $output"
-                else
-                    output+="Script $file failed with output: $result\n"
-                fi
-            done
-            echo "::set-output name=script-output::$output"
+          wget https://raw.githubusercontent.com/Ensign-College/CS105_Tests/main/Lab2aTest.py
+          result=$(python Lab2aTest.py)
+          if [[ $result == *"Well done!"* ]]; then
+              echo "::set-output name=script-output::Script Lab2aTest.py executed successfully with output: $result"
           else
-            echo "::set-output name=script-output::No Python files found."
+              echo "::set-output name=script-output::Script Lab2aTest.py failed with output: $result"
           fi
 
       - name: Comment on PR
